@@ -1,0 +1,23 @@
+{
+  "name": "phaser-blazer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://simsoll@github.com/simsoll/phaser-blazer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simsoll/phaser-blazer/issues"
+  },
+  "homepage": "https://github.com/simsoll/phaser-blazer#readme",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}
