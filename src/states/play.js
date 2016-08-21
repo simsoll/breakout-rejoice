@@ -1,11 +1,18 @@
 import Phaser from 'phaser';
+import { gameObjects } from '../factories/gameObjects';
 
 import { LOSE_STATE } from '../common/states';
-import { PADDLE_SPRITE_KEY, BRICK_SPRITE_KEY, BALL_SPRITE_KEY } from '../common/sprites';
+
+import { ballFactory } from '../factories/ball';
+import { brickFactory } from '../factories/brick';
+import { paddleFactory } from '../factories/paddle';
 
 export const playState = Object.assign(Object.create(Phaser.State), {
-    create() {
+    preload() {
+        gameObjects.init(this.game);
+    },
 
+    create() {
         // Add the physics engine to all the game objetcs
         this.game.world.enableBody = true;
 
@@ -13,12 +20,7 @@ export const playState = Object.assign(Object.create(Phaser.State), {
         this.left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         this.right = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
-        // Add the paddle at the bottom of the screen
-        this.paddle = this.game.add.sprite(200, 400, PADDLE_SPRITE_KEY);
-
-        // Make sure the paddle won't move when it hits the ball
-        this.paddle.body.immovable = true;
-        this.paddle.body.collideWorldBounds = true;
+        this.paddle = paddleFactory.create(200, 400);
 
         // Create a group that will contain all the bricks
         this.bricks = this.game.add.group();
@@ -27,26 +29,13 @@ export const playState = Object.assign(Object.create(Phaser.State), {
         for (var i = 0; i < 5; i++) {
             for (var j = 0; j < 5; j++) {
                 // Create the brick at the correct position
-                var brick = this.game.add.sprite(55 + i * 60, 55 + j * 35, BRICK_SPRITE_KEY);
+                const brick = brickFactory.create(55 + i * 60, 55 + j * 35);
 
-                // Make sure the brick won't move when the ball hits it
-                brick.body.immovable = true;
-
-                // Add the brick to the group
                 this.bricks.add(brick);
             }
         }
 
-        // Add the ball 
-        this.ball = this.game.add.sprite(200, 300, BALL_SPRITE_KEY);
-
-        // Give the ball some initial speed
-        this.ball.body.velocity.x = 200;
-        this.ball.body.velocity.y = -200;
-
-        // Make sure the ball will bounce when hitting something
-        this.ball.body.bounce.setTo(1);
-        this.ball.body.collideWorldBounds = true;
+        this.ball = ballFactory.create(200,300);
     },
 
     update() {
