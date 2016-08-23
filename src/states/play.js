@@ -43,14 +43,14 @@ export const playState = Object.assign(Object.create(Phaser.State), {
 
         // Move the paddle left/right when an arrow key is pressed
         if (this.left.isDown) {
-            this.paddle.body.velocity.x = -300;
+            this.paddle.moveLeft();
         }
         else if (this.right.isDown) {
-            this.paddle.body.velocity.x = 300;
+            this.paddle.moveRight();
         }
         // Stop the paddle when no key is pressed
         else {
-            this.paddle.body.velocity.x = 0;
+            this.paddle.stop();
         }
 
         // Add collisions between the paddle and the ball
