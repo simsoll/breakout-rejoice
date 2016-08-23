@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { inputService } from '../services/input';
 import { gameObjects } from '../factories/gameObjects';
 
 import { LOSE_STATE } from '../common/states';
@@ -10,6 +11,7 @@ import { paddleFactory } from '../factories/paddle';
 export const playState = Object.assign(Object.create(Phaser.State), {
     preload() {
         gameObjects.init(this.game);
+        inputService.init(this.game, [Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT]);
     },
 
     create() {
@@ -17,10 +19,11 @@ export const playState = Object.assign(Object.create(Phaser.State), {
         this.game.world.enableBody = true;
 
         // Create the left/right arrow keys
-        this.left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        this.right = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-
         this.paddle = paddleFactory.create(200, 400);
+
+        // Setup input service
+        inputService.addListener(Phaser.Keyboard.LEFT, this.paddle.moveLeft, this.paddle.stop, this.paddle);
+        inputService.addListener(Phaser.Keyboard.RIGHT, this.paddle.moveRight, this.paddle.stop, this.paddle);
 
         // Create a group that will contain all the bricks
         this.bricks = this.game.add.group();
@@ -41,17 +44,7 @@ export const playState = Object.assign(Object.create(Phaser.State), {
     update() {
         // Here we update the game 60 times per second
 
-        // Move the paddle left/right when an arrow key is pressed
-        if (this.left.isDown) {
-            this.paddle.moveLeft();
-        }
-        else if (this.right.isDown) {
-            this.paddle.moveRight();
-        }
-        // Stop the paddle when no key is pressed
-        else {
-            this.paddle.stop();
-        }
+        inputService.update();
 
         // Add collisions between the paddle and the ball
         this.game.physics.arcade.collide(this.paddle, this.ball);
