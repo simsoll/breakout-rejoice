@@ -38,7 +38,7 @@ export const playState = Object.assign(Object.create(Phaser.State), {
             }
         }
 
-        this.ball = ballFactory.create(200,300);
+        this.ball = ballFactory.create(200, 300);
     },
 
     update() {
@@ -47,18 +47,20 @@ export const playState = Object.assign(Object.create(Phaser.State), {
         inputService.update();
 
         // Add collisions between the paddle and the ball
-        this.game.physics.arcade.collide(this.paddle, this.ball);
+        this.game.physics.arcade.collide(this.ball, this.paddle, this.ballHitPaddle);
 
         // Call the 'hit' function when the ball hits a brick
-        this.game.physics.arcade.collide(this.ball, this.bricks, this.hit, null, this);
+        this.game.physics.arcade.collide(this.ball, this.bricks, this.ballHitBrick);
 
         // If the ball is below the paddle then game over!
         if (this.ball.y > this.paddle.y) {
             this.game.state.start(LOSE_STATE);
         }
+    ballHitPaddle(ball, paddle) {
+        ball.body.velocity.x = -1 * 5 * (paddle.x - ball.x);
     },
 
-    hit(ball, brick) {
+    ballHitBrick(ball, brick) {
         brick.kill();
-    }    
+    }
 });

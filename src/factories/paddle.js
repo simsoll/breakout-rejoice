@@ -21,6 +21,7 @@ export const paddleFactory = {
         // Make sure the paddle won't move when it hits the ball
         paddle.body.immovable = true;
         paddle.body.collideWorldBounds = true;
+        paddle.anchor.set(0.5,1);
 
         paddle.moveLeft = moveLeft;
         paddle.moveRight = moveRight;
