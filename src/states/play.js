@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { inputService } from '../services/input';
 import { gameObjects } from '../factories/gameObjects';
 
-import { LOSE_STATE } from '../common/states';
+import { LOSE_STATE, WIN_STATE } from '../common/states';
 
 import { ballFactory } from '../factories/ball';
 import { brickFactory } from '../factories/brick';
@@ -56,6 +56,12 @@ export const playState = Object.assign(Object.create(Phaser.State), {
         if (this.ball.y > this.paddle.y) {
             this.game.state.start(LOSE_STATE);
         }
+
+        if (this.bricks.countLiving() === 0) {
+            this.game.state.start(WIN_STATE);
+        }
+    },
+
     ballHitPaddle(ball, paddle) {
         ball.body.velocity.x = -1 * 5 * (paddle.x - ball.x);
     },

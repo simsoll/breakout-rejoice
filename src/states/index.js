@@ -3,3 +3,4 @@ export { loadState as load } from './load';
 export { menuState as menu } from './menu';
 export { playState as play } from './play';
 export { loseState as lose } from './lose';
+export { winState as win } from './win';
